@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th = "http://www.thymleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>post_list</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <style>
+        #update-form{
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div th:replace="common/header :: headerFragment"></div>
+    <div class="container">
+        <div class="page-header" style="text-align: center;"><h4>게시글 상세조회</h4></div>
+        <table class="table">
+                <tr>
+                    <td>id</td>
+                    <td th:text="${post.id}"></td>
+                </tr>
+                <tr>
+                    <td>title</td>
+                    <td th:text="${post.title}"></td>
+                </tr>
+                <tr>
+                    <td>contents</td>
+                    <td style="white-space: pre-wrap;word-break:break-all;" th:text="${post.contents}"></td>
+                </tr>
+            <tr>
+                <td>작성자</td>
+                <td th:text="${post.author_email}"></td>
+            </tr>
+            <tr>
+                <td>등록일</td>
+                <td th:text="${post.createdTime}"></td>
+            </tr>
+            <tr>
+                <td>수정일</td>
+                <td th:text="${post.updatedTime}"></td>
+            </tr>
+            </tbody>
+        </table>
+        <div class="pull-right">
+            <button class="btn btn-primary" onclick="showUpdateForm()">수정</button>
+            <a th:href="@{/post/delete/{id}(id=${post.id})}" class="btn btn-primary">삭제</a>
+        </div>
+        <br>
+        <div id="update-form" class="mt-4">
+            <form th:action="@{/post/update/{id}(id=${post.id})}" method="post">
+                <h3>수정하기</h3>
+                <div class="form-group" style="padding-top: 20px;">
+                    <label for="title"><input type="text" class="form-control" name="title" id="title" th:value="${post.title}" placeholder="title">
+                    </label>
+                </div>
+                <div class="form-group" style="padding-top: 20px;">
+                    <textarea name="contents" id="contents"  class="form-control" rows="10" maxlength="800" th:text="${post.contents}"></textarea>
+                </div>
+                <div class="form-group" style="padding-top: 20px;">
+                    <button type="submit" class="btn btn-secondary">수정완료</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script>
+        function showUpdateForm(){
+            document.getElementById('update-form').style.display = 'block';
+        }
+    </script>
+</body>
+</html>

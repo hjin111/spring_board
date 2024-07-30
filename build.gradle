@@ -1,0 +1,53 @@
+// java 빌드에 필요한 플로그인 설정
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '2.7.11'
+	// 의존성 관리 툴의 버전을 명시
+	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+}
+
+group = 'com.beyond'
+// 빌드된 jar 파일의 버젼명이 여기서 확정, snapshot : 실험용 버전
+version = '0.0.1-SNAPSHOT'
+
+java {
+	sourceCompatibility = '11'
+}
+
+repositories {
+	// 의존성을 가져오는 대상 저장소(repository)
+	// 내부망에서 인터넷을 사용하기 불가한 경우에는 nexus(설치형)와 같은 repository를 사용하기도 함
+	mavenCentral()
+}
+
+// starter 종속성은 일반적으로 별도의 버전관리가 필요 없고, 버전에 따라 호환성을 맞춰줌.
+// starter 가 없으면 버전을 따로 맞춰줘야 함
+dependencies {
+
+	// mariadb 클라이언트 추가
+	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+	// 타임리프(템플릿 엔진 - JSP, 타임리프 등) 의존성
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	// implementation 키워드는 컴파일 시점과 런타임 시점에 모두 필요한 라이브러리임을 명시
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	// compileOnly 키워드는 컴파일 시점에서 필요한 라이브러리임을 명시
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+	// batch 의존성 추가
+	implementation 'org.springframework.boot:spring-boot-starter-batch'
+
+	// 로그인 관련 시큐리티 의존성 추가
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	// 타임리프에서 시큐리티 문법을 쓰기 위한 라이브러리
+	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
+
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
